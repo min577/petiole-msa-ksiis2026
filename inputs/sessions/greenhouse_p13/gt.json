@@ -1,0 +1,15 @@
+{
+  "gt_mm": {
+    "1": 107.0,
+    "2": 80.0,
+    "3": 74.0,
+    "4": 102.0
+  },
+  "etiolated": {
+    "1": true,
+    "2": false,
+    "3": false,
+    "4": true
+  },
+  "stage": "vegetative"
+}

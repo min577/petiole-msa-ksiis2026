@@ -1,0 +1,11 @@
+{
+  "plant": "plant16",
+  "gt_mm": {
+    "1": 107,
+    "2": 127,
+    "3": 115
+  },
+  "etiolated": [],
+  "n_petioles": 3,
+  "has_depth": true
+}

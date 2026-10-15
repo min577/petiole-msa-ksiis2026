@@ -1,0 +1,17 @@
+{
+  "plant": "plant08",
+  "gt_mm": {
+    "1": 145,
+    "2": 95,
+    "3": 131
+  },
+  "etiolated": [
+    "1",
+    "3"
+  ],
+  "excluded": {
+    "4": "mis-click, only 3 petioles"
+  },
+  "n_petioles": 3,
+  "has_depth": true
+}

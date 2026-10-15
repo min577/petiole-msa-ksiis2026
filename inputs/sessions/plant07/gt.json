@@ -1,0 +1,12 @@
+{
+  "plant": "plant07",
+  "gt_mm": {
+    "1": 86,
+    "2": 95,
+    "3": 65
+  },
+  "excluded": {
+    "4": "crown seen in too few reliable views"
+  },
+  "n_petioles": 3
+}

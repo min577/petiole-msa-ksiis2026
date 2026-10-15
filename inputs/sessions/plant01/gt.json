@@ -1,0 +1,12 @@
+{
+  "plant": "plant01",
+  "gt_mm": {
+    "1": 140,
+    "2": 113,
+    "3": 145,
+    "4": 102,
+    "5": 140
+  },
+  "n_petioles": 5,
+  "note": "first ablation pilot"
+}
