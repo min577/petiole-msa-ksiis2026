@@ -304,6 +304,9 @@ def block_c(rows):
 
 
 # --------------------------------------------------------------------------- D
+SETTLE_STD_MS = 600
+
+
 def run_dirs():
     """Raw capture runs; only manifest.json + capture_mtimes.json (image file times) are shipped."""
     return sorted((INPUTS / "runs" / "lab").iterdir()), sorted((INPUTS / "runs" / "greenhouse").iterdir())
@@ -328,16 +331,20 @@ def path_joints(man):
 def block_d(pet, throughput_csv=ABL / "_throughput5_causal.csv"):
     lab, gh = run_dirs()
     res = {}
-    models = {}
+    models = {}; all_x = []; n_fit = n_excl = 0
     fig, ax = plt.subplots(1, 2, figsize=(10.5, 4.6))
     for coh, runs, st in (("Laboratory", lab, COH_STYLE["Laboratory"]), ("Greenhouse", gh, COH_STYLE["Greenhouse"])):
-        iv = []; sweeps = []; man0 = None
+        # Three runs were captured with a 2.5 s settle; their intercept sits ~2.5 s higher. Fit the standard (600 ms) runs only.
+        iv = []; iv_x = []; sweeps = []; man0 = None; n_x = 0
         for r in runs:
-            o, man = intervals(r); iv += o; sweeps.append(sum(x["dt"] for x in o)); man0 = man0 or man
+            o, man = intervals(r)
+            if man["settle_ms"] != SETTLE_STD_MS:
+                iv_x += o; n_x += 1; continue
+            iv += o; sweeps.append(sum(x["dt"] for x in o)); man0 = man0 or man
         dt = np.array([x["dt"] for x in iv]); dq = np.array([x["dq_max"] for x in iv])
         lin = ols(dq, dt)
         models[coh] = (lin, path_joints(man0))
-        res[coh] = dict(n_runs=len(runs), n_intervals=len(iv), sweep_s_median=float(np.median(sweeps)),
+        res[coh] = dict(n_runs=len(sweeps), n_runs_excluded_settle=n_x, n_intervals=len(iv), sweep_s_median=float(np.median(sweeps)),
                         sweep_s_min=float(min(sweeps)), sweep_s_max=float(max(sweeps)),
                         per_view_s_mean=float(dt.mean()), per_view_s_median=float(np.median(dt)),
                         move_model=dict(intercept_s=lin["intercept"], slope_s_per_deg=lin["slope"],
@@ -345,10 +352,14 @@ def block_d(pet, throughput_csv=ABL / "_throughput5_causal.csv"):
                         settle_ms=man0["settle_ms"], speed_percent=man0["speed_percent"])
         ax[0].plot(dq, dt, linestyle="none", marker=st["marker"], markerfacecolor="none",
                    markeredgecolor=st["color"], markersize=4.5, alpha=0.7,
-                   label=f"{coh}: t = {lin['intercept']:.1f} + {lin['slope']:.2f}·Δq  (R²={lin['r2']:.2f})")
+                   label=f"{coh}: t = {lin['intercept']:.1f} + {lin['slope']:.2f}·Δq  (R²={lin['r2']:.3f})")
         xs = np.array([0, dq.max()]); ax[0].plot(xs, lin["intercept"] + lin["slope"] * xs, color=st["color"], lw=1.6)
+        all_x += iv_x; n_fit += len(sweeps); n_excl += n_x
+    if all_x:
+        ax[0].plot([x["dq_max"] for x in all_x], [x["dt"] for x in all_x], linestyle="none", marker="x", color="grey",
+                   markersize=4, alpha=0.7, label=f"settle 2.5 s runs (n={n_excl}), not fitted")
     ax[0].set_xlabel("Largest joint move between consecutive views, Δq (deg)")
-    ax[0].set_ylabel("Time between captures (s)"); ax[0].set_title("(a) Per-view time model from 34 capture runs")
+    ax[0].set_ylabel("Time between captures (s)"); ax[0].set_title(f"(a) Per-view time model from {n_fit} capture runs")
     ax[0].legend(loc="upper left", frameon=True, edgecolor="black", fancybox=False, fontsize=9)
 
     # policies: reconstruct the acquisition order of each strategy per petiole (same code paths as the paper)
