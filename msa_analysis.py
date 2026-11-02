@@ -293,7 +293,8 @@ def block_c(rows):
         acc, mae, esc = [], [], []
         for t in taus:
             m = ci <= t
-            acc.append(100 * m.mean()); mae.append(float(ae[m].mean()) if m.any() else np.nan)
+            # MAE only where at least 10 sets are accepted; below that the curve is noise
+            acc.append(100 * m.mean()); mae.append(float(ae[m].mean()) if m.sum() >= 10 else np.nan)
             esc.append(100 * float(np.mean(ae[m] > 10)) if m.any() else np.nan)   # escapes: accepted but >10 mm off
         res[coh] = dict(n=len(sub), taus=taus.tolist(), accepted_pct=acc, mae_accepted=mae, escape_pct_gt10=esc,
                         spearman_ci_abserr=float(sps.spearmanr(ci, ae).correlation) if sps else float("nan"),
@@ -303,7 +304,7 @@ def block_c(rows):
         ax[0].plot(ci, ae, linestyle="none", marker=st["marker"], markerfacecolor="none",
                    markeredgecolor=st["color"], markersize=4.5, alpha=0.8, label=f"{coh} (n={len(sub)})")
         ax[1].plot(taus, acc, color=st["color"], lw=1.8, label=f"{coh}: accepted (%)")
-        ax1r.plot(taus, mae, color=st["color"], lw=1.8, ls="--", label=f"{coh}: MAE of accepted (mm, right)")
+        ax1r.plot(taus, mae, color=st["color"], lw=1.8, ls="--", label=f"{coh}: MAE of accepted (mm, right; ≥10 sets)")
     ax[0].set_xscale("log"); ax[0].set_yscale("log")
     ax[0].axvline(TAU, color="grey", lw=1, ls="--"); ax[0].axhline(10, color="grey", lw=1, ls=":")
     ax[0].set_xlabel("Predicted 95% half-interval (mm)"); ax[0].set_ylabel("|error| vs caliper (mm)")
