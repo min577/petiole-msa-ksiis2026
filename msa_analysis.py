@@ -366,14 +366,22 @@ def block_d(pet, throughput_csv=ABL / "_throughput5_causal.csv"):
                         move_model=dict(intercept_s=lin["intercept"], slope_s_per_deg=lin["slope"],
                                         r2=lin["r2"], p_slope=lin["p_slope"]),
                         settle_ms=man0["settle_ms"], speed_percent=man0["speed_percent"])
-        ax[0].plot(dq, dt, linestyle="none", marker=st["marker"], markerfacecolor="none",
-                   markeredgecolor=st["color"], markersize=4.5, alpha=0.7,
+        # 1~2 intervals per run carry an extra ~3 s pause; they stay in the fit (OLS keeps the mean, so run totals
+        # are preserved) but are drawn separately so the line is not read as missing them.
+        pause = dt - (lin["intercept"] + lin["slope"] * dq) > 1.5
+        res[coh]["n_pause_intervals"] = int(pause.sum())
+        xs = np.array([0, dq.max()])
+        ax[0].plot(xs, lin["intercept"] + lin["slope"] * xs, color=st["color"], lw=1.0, zorder=1)
+        ax[0].plot(dq[~pause], dt[~pause], linestyle="none", marker=st["marker"], markerfacecolor="none",
+                   markeredgecolor=st["color"], markersize=4.5, zorder=2,
                    label=f"{coh}: t = {lin['intercept']:.1f} + {lin['slope']:.2f}·Δq  (R²={lin['r2']:.3f})")
-        xs = np.array([0, dq.max()]); ax[0].plot(xs, lin["intercept"] + lin["slope"] * xs, color=st["color"], lw=1.6)
+        ax[0].plot(dq[pause], dt[pause], linestyle="none", marker=st["marker"], markerfacecolor=st["color"],
+                   markeredgecolor=st["color"], markersize=4.5, zorder=2,
+                   label=f"{coh}: interval with ~3 s pause (n={int(pause.sum())}, fitted)")
         all_x += iv_x; n_fit += len(sweeps); n_excl += n_x
     if all_x:
-        ax[0].plot([x["dq_max"] for x in all_x], [x["dt"] for x in all_x], linestyle="none", marker="x", color="grey",
-                   markersize=4, alpha=0.7, label=f"settle 2.5 s runs (n={n_excl}), not fitted")
+        ax[0].plot([x["dq_max"] for x in all_x], [x["dt"] for x in all_x], linestyle="none", marker="x",
+                   color="#B0B0B0", markeredgecolor="#B0B0B0", markersize=3.5, zorder=0, label=f"settle 2.5 s runs (n={n_excl}), not fitted")
     ax[0].set_xlabel("Largest joint move between consecutive views, Δq (deg)")
     ax[0].set_ylabel("Time between captures (s)"); ax[0].set_title(f"(a) Per-view time model from {n_fit} capture runs")
     ax[0].legend(loc="upper left", frameon=True, edgecolor="black", fancybox=False, fontsize=9)

@@ -894,7 +894,8 @@
     "p_slope": 0.0
    },
    "settle_ms": 600,
-   "speed_percent": 10.0
+   "speed_percent": 10.0,
+   "n_pause_intervals": 22
   },
   "Greenhouse": {
    "n_runs": 14,
@@ -912,7 +913,8 @@
     "p_slope": 0.0
    },
    "settle_ms": 600,
-   "speed_percent": 10.0
+   "speed_percent": 10.0,
+   "n_pause_intervals": 28
   },
   "policy_table": [
    {
