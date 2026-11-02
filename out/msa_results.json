@@ -23,7 +23,23 @@
    "linearity_intercept": -2.442260190505424,
    "linearity_r2": 0.04029977433173604,
    "pct_within_5mm": 70.65217391304348,
-   "r_pearson": 0.9881420253143965
+   "r_pearson": 0.9881420253143965,
+   "bias_wilcoxon_p": 0.06325590418110821,
+   "drop_max": {
+    "dropped": "plant10#3",
+    "dropped_err": 41.572634517387996,
+    "dropped_ci": 4.289466617546822,
+    "n": 91,
+    "bias_mm": 0.9505885352038349,
+    "bias_p": 0.052743792158849286,
+    "bias_wilcoxon_p": 0.08803462377771548,
+    "loa": [
+     -8.103972488823437,
+     10.005149559231107
+    ],
+    "linearity_slope": 0.027608963665030056,
+    "linearity_slope_p": 0.029051241618805658
+   }
   },
   "Greenhouse": {
    "n": 55,
@@ -48,7 +64,23 @@
    "linearity_intercept": -2.246589531515057,
    "linearity_r2": 0.04596297120998416,
    "pct_within_5mm": 90.9090909090909,
-   "r_pearson": 0.995973073459396
+   "r_pearson": 0.995973073459396,
+   "bias_wilcoxon_p": 0.6092870287816331,
+   "drop_max": {
+    "dropped": "greenhouse_p11#2",
+    "dropped_err": 7.069295246070951,
+    "dropped_ci": 3.1570743508144474,
+    "n": 54,
+    "bias_mm": -0.33519816971303484,
+    "bias_p": 0.42851784368212825,
+    "bias_wilcoxon_p": 0.44605744211768084,
+    "loa": [
+     -6.38628356167335,
+     5.7158872222472805
+    ],
+    "linearity_slope": 0.020811202382097847,
+    "linearity_slope_p": 0.09025826462437692
+   }
   }
  },
  "B_repeatability": {
@@ -847,34 +879,36 @@
  },
  "D_cycle_time": {
   "Laboratory": {
-   "n_runs": 20,
-   "n_intervals": 520,
-   "sweep_s_median": 255.4571248292923,
+   "n_runs": 18,
+   "n_runs_excluded_settle": 2,
+   "n_intervals": 468,
+   "sweep_s_median": 255.3103597164154,
    "sweep_s_min": 253.5082335472107,
-   "sweep_s_max": 326.74407601356506,
-   "per_view_s_mean": 10.080376025805107,
-   "per_view_s_median": 4.126625180244446,
+   "sweep_s_max": 257.4950132369995,
+   "per_view_s_mean": 9.8140745865993,
+   "per_view_s_median": 3.7113523483276367,
    "move_model": {
-    "intercept_s": 1.340345756432705,
-    "slope_s_per_deg": 0.11128316875016589,
-    "r2": 0.9911096251954813,
+    "intercept_s": 1.086552515449509,
+    "slope_s_per_deg": 0.11112381636848774,
+    "r2": 0.9963172097493519,
     "p_slope": 0.0
    },
    "settle_ms": 600,
    "speed_percent": 10.0
   },
   "Greenhouse": {
-   "n_runs": 15,
-   "n_intervals": 450,
-   "sweep_s_median": 235.32968401908875,
+   "n_runs": 14,
+   "n_runs_excluded_settle": 1,
+   "n_intervals": 420,
+   "sweep_s_median": 235.24948525428772,
    "sweep_s_min": 233.41328144073486,
-   "sweep_s_max": 333.8886423110962,
-   "per_view_s_mean": 8.109137707286411,
-   "per_view_s_median": 4.841397285461426,
+   "sweep_s_max": 243.63616561889648,
+   "per_view_s_mean": 7.893388871351878,
+   "per_view_s_median": 4.4089518785476685,
    "move_model": {
-    "intercept_s": 1.3253835404539898,
-    "slope_s_per_deg": 0.11279182728696746,
-    "r2": 0.9781866219939229,
+    "intercept_s": 1.1096651862966649,
+    "slope_s_per_deg": 0.11279131749713443,
+    "r2": 0.9894532007992686,
     "p_slope": 0.0
    },
    "settle_ms": 600,
@@ -887,14 +921,14 @@
     "label": "Sequential",
     "n_plants": 20,
     "poses_per_plant": 21.9,
-    "plant_time_s_mean": 225.49115853656235,
-    "plant_time_s_sd": 46.782535789910014,
+    "plant_time_s_mean": 219.65222655215126,
+    "plant_time_s_sd": 45.826316194856204,
     "reached_pct": 76.08695652173913,
-    "plants_per_hour": 15.965149247376262,
-    "spec_petioles_per_hour": 55.87802236581692,
-    "plant_time_opt_s_mean": 114.95425471603512,
-    "saving_pct": 49.02050463437757,
-    "spec_petioles_per_hour_opt": 109.6088181435742
+    "plants_per_hour": 16.389544765872266,
+    "spec_petioles_per_hour": 57.363406680552934,
+    "plant_time_opt_s_mean": 109.27360649623056,
+    "saving_pct": 50.25153707226997,
+    "spec_petioles_per_hour_opt": 115.30689252426791
    },
    {
     "cohort": "Laboratory",
@@ -902,14 +936,14 @@
     "label": "Random",
     "n_plants": 20,
     "poses_per_plant": 22.75,
-    "plant_time_s_mean": 238.71864227660132,
-    "plant_time_s_sd": 35.60239224324769,
+    "plant_time_s_mean": 232.64667630521853,
+    "plant_time_s_sd": 34.49352082589577,
     "reached_pct": 71.73913043478261,
-    "plants_per_hour": 15.080514725065795,
-    "spec_petioles_per_hour": 49.76569859271712,
-    "plant_time_opt_s_mean": 120.19678160715902,
-    "saving_pct": 49.64918514077002,
-    "spec_petioles_per_hour_opt": 98.8379209588788
+    "plants_per_hour": 15.474108881216146,
+    "spec_petioles_per_hour": 51.06455930801328,
+    "plant_time_opt_s_mean": 114.29453349150154,
+    "saving_pct": 50.87205400624166,
+    "spec_petioles_per_hour_opt": 103.94197900010106
    },
    {
     "cohort": "Laboratory",
@@ -917,14 +951,14 @@
     "label": "Coverage-NBV",
     "n_plants": 20,
     "poses_per_plant": 21.7,
-    "plant_time_s_mean": 233.07328231683442,
-    "plant_time_s_sd": 36.26607772524817,
+    "plant_time_s_mean": 227.2738678652354,
+    "plant_time_s_sd": 35.26727939564392,
     "reached_pct": 71.73913043478261,
-    "plants_per_hour": 15.445785824160847,
-    "spec_petioles_per_hour": 50.9710932197308,
-    "plant_time_opt_s_mean": 117.64080933664984,
-    "saving_pct": 49.526257077921244,
-    "spec_petioles_per_hour_opt": 100.98536440703407
+    "plants_per_hour": 15.839920505663505,
+    "spec_petioles_per_hour": 52.27173766868957,
+    "plant_time_opt_s_mean": 112.00668887963218,
+    "saving_pct": 50.7173042234456,
+    "spec_petioles_per_hour_opt": 106.06509413707269
    },
    {
     "cohort": "Laboratory",
@@ -932,14 +966,14 @@
     "label": "Max-parallax",
     "n_plants": 20,
     "poses_per_plant": 23.45,
-    "plant_time_s_mean": 239.857861708867,
-    "plant_time_s_sd": 38.48599329410751,
+    "plant_time_s_mean": 233.6079526783946,
+    "plant_time_s_sd": 37.503402886734044,
     "reached_pct": 71.73913043478261,
-    "plants_per_hour": 15.00888890758804,
-    "spec_petioles_per_hour": 49.52933339504053,
-    "plant_time_opt_s_mean": 121.1151039494556,
-    "saving_pct": 49.50546832754566,
-    "spec_petioles_per_hour_opt": 98.08850929903693
+    "plants_per_hour": 15.410434271285613,
+    "spec_petioles_per_hour": 50.85443309524252,
+    "plant_time_opt_s_mean": 115.03522908918623,
+    "saving_pct": 50.757143423300356,
+    "spec_petioles_per_hour_opt": 103.27271127342647
    },
    {
     "cohort": "Laboratory",
@@ -947,14 +981,14 @@
     "label": "Uncertainty-opt.",
     "n_plants": 20,
     "poses_per_plant": 23.4,
-    "plant_time_s_mean": 240.06755002014265,
-    "plant_time_s_sd": 39.29650748890574,
+    "plant_time_s_mean": 233.8299344220224,
+    "plant_time_s_sd": 38.201838659743004,
     "reached_pct": 72.82608695652173,
-    "plants_per_hour": 14.995779311689336,
-    "spec_petioles_per_hour": 50.23586069415928,
-    "plant_time_opt_s_mean": 121.01008345950581,
-    "saving_pct": 49.59331927644841,
-    "spec_petioles_per_hour_opt": 99.66111629065767
+    "plants_per_hour": 15.395804685565302,
+    "spec_petioles_per_hour": 51.575945696643764,
+    "plant_time_opt_s_mean": 114.94295268012391,
+    "saving_pct": 50.84335418207326,
+    "spec_petioles_per_hour_opt": 104.92161301582287
    },
    {
     "cohort": "Laboratory",
@@ -962,14 +996,14 @@
     "label": "Full sweep",
     "n_plants": 20,
     "poses_per_plant": 27.0,
-    "plant_time_s_mean": 263.42845317983426,
+    "plant_time_s_mean": 256.250639703425,
     "plant_time_s_sd": 5.832011720969797e-14,
     "reached_pct": 65.21739130434783,
-    "plants_per_hour": 13.665949735286924,
-    "spec_petioles_per_hour": 40.997849205860774,
-    "plant_time_opt_s_mean": 133.6411191298908,
-    "saving_pct": 49.26853287231724,
-    "spec_petioles_per_hour_opt": 80.81345075764501
+    "plants_per_hour": 14.048745416466108,
+    "spec_petioles_per_hour": 42.14623624939832,
+    "plant_time_opt_s_mean": 126.6491551491852,
+    "saving_pct": 50.57606283607166,
+    "spec_petioles_per_hour_opt": 85.27494705573234
    },
    {
     "cohort": "Greenhouse",
@@ -977,14 +1011,14 @@
     "label": "Sequential",
     "n_plants": 15,
     "poses_per_plant": 19.133333333333333,
-    "plant_time_s_mean": 164.9243787931977,
-    "plant_time_s_sd": 44.9261698090344,
+    "plant_time_s_mean": 160.7963368176621,
+    "plant_time_s_sd": 43.67372424637182,
     "reached_pct": 85.45454545454545,
-    "plants_per_hour": 21.828185901576862,
-    "spec_petioles_per_hour": 68.39498249160751,
-    "plant_time_opt_s_mean": 131.4026477235109,
-    "saving_pct": 20.325516042549673,
-    "spec_petioles_per_hour_opt": 85.84301911278575
+    "plants_per_hour": 22.388569735156867,
+    "spec_petioles_per_hour": 70.15085183682486,
+    "plant_time_opt_s_mean": 127.27475725751371,
+    "saving_pct": 20.847228378194217,
+    "spec_petioles_per_hour_opt": 88.627157835998
    },
    {
     "cohort": "Greenhouse",
@@ -992,14 +1026,14 @@
     "label": "Random",
     "n_plants": 15,
     "poses_per_plant": 20.733333333333334,
-    "plant_time_s_mean": 190.5781048867315,
-    "plant_time_s_sd": 34.174056783989734,
+    "plant_time_s_mean": 186.10480718097386,
+    "plant_time_s_sd": 33.25822135488421,
     "reached_pct": 85.45454545454545,
-    "plants_per_hour": 18.88989295039758,
-    "spec_petioles_per_hour": 59.18833124457909,
-    "plant_time_opt_s_mean": 145.97096744762703,
-    "saving_pct": 23.406223640232092,
-    "spec_petioles_per_hour_opt": 77.27564047314515
+    "plants_per_hour": 19.343938797342577,
+    "spec_petioles_per_hour": 60.61100823167341,
+    "plant_time_opt_s_mean": 141.49787135457214,
+    "saving_pct": 23.968717682302852,
+    "spec_petioles_per_hour_opt": 79.71851372756015
    },
    {
     "cohort": "Greenhouse",
@@ -1007,14 +1041,14 @@
     "label": "Coverage-NBV",
     "n_plants": 15,
     "poses_per_plant": 18.933333333333334,
-    "plant_time_s_mean": 188.44702326537677,
-    "plant_time_s_sd": 31.202065043120136,
+    "plant_time_s_mean": 184.36201744633678,
+    "plant_time_s_sd": 30.055323527607026,
     "reached_pct": 85.45454545454545,
-    "plants_per_hour": 19.10351215752754,
-    "spec_petioles_per_hour": 59.857671426919616,
-    "plant_time_opt_s_mean": 144.9507349359459,
-    "saving_pct": 23.08144091412795,
-    "spec_petioles_per_hour_opt": 77.81954334336189
+    "plants_per_hour": 19.526798685894565,
+    "spec_petioles_per_hour": 61.18396921580297,
+    "plant_time_opt_s_mean": 140.86592570885847,
+    "saving_pct": 23.59276186058169,
+    "spec_petioles_per_hour_opt": 80.07614292269297
    },
    {
     "cohort": "Greenhouse",
@@ -1022,14 +1056,14 @@
     "label": "Max-parallax",
     "n_plants": 15,
     "poses_per_plant": 19.6,
-    "plant_time_s_mean": 175.32412317985043,
-    "plant_time_s_sd": 44.22500063312388,
+    "plant_time_s_mean": 171.09536843040706,
+    "plant_time_s_sd": 42.75539965526678,
     "reached_pct": 85.45454545454545,
-    "plants_per_hour": 20.53339799855756,
-    "spec_petioles_per_hour": 64.33798039548036,
-    "plant_time_opt_s_mean": 142.87000435271062,
-    "saving_pct": 18.51092607139282,
-    "spec_petioles_per_hour_opt": 78.95289183412129
+    "plants_per_hour": 21.040896857849766,
+    "spec_petioles_per_hour": 65.92814348792928,
+    "plant_time_opt_s_mean": 138.64139628747486,
+    "saving_pct": 18.96835223574905,
+    "spec_petioles_per_hour_opt": 81.36098093393956
    },
    {
     "cohort": "Greenhouse",
@@ -1037,14 +1071,14 @@
     "label": "Uncertainty-opt.",
     "n_plants": 15,
     "poses_per_plant": 18.6,
-    "plant_time_s_mean": 179.74187390119428,
-    "plant_time_s_sd": 44.87358153665957,
+    "plant_time_s_mean": 175.72881154842946,
+    "plant_time_s_sd": 43.25636562539164,
     "reached_pct": 87.27272727272727,
-    "plants_per_hour": 20.02872186577376,
-    "spec_petioles_per_hour": 64.09190997047604,
-    "plant_time_opt_s_mean": 139.6075339704303,
-    "saving_pct": 22.32887588165805,
-    "spec_petioles_per_hour_opt": 82.51703666966858
+    "plants_per_hour": 20.48611134553692,
+    "spec_petioles_per_hour": 65.55555630571814,
+    "plant_time_opt_s_mean": 135.59465301448242,
+    "saving_pct": 22.83869001349639,
+    "spec_petioles_per_hour_opt": 84.95910232367044
    },
    {
     "cohort": "Greenhouse",
@@ -1052,14 +1086,14 @@
     "label": "Full sweep",
     "n_plants": 15,
     "poses_per_plant": 31.0,
-    "plant_time_s_mean": 244.6005674827676,
-    "plant_time_s_sd": 1.1767705689334563e-13,
+    "plant_time_s_mean": 237.91237867480132,
+    "plant_time_s_sd": 5.883852844667281e-14,
     "reached_pct": 85.45454545454545,
-    "plants_per_hour": 14.717872640477927,
-    "spec_petioles_per_hour": 46.11600094016417,
-    "plant_time_opt_s_mean": 191.90873744738795,
-    "saving_pct": 21.541990101511864,
-    "spec_petioles_per_hour_opt": 58.77793867041842
+    "plants_per_hour": 15.13162122985111,
+    "spec_petioles_per_hour": 47.412413186866814,
+    "plant_time_opt_s_mean": 185.2207867928399,
+    "saving_pct": 22.147478065437166,
+    "spec_petioles_per_hour_opt": 60.900291999170214
    }
   ]
  },

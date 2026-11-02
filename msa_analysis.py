@@ -124,7 +124,17 @@ def block_a(pet):
             linearity_slope=lin["slope"], linearity_slope_p=lin["p_slope"],
             linearity_intercept=lin["intercept"], linearity_r2=lin["r2"],
             pct_within_5mm=float(np.mean(np.abs(err) <= 5) * 100),
-            r_pearson=float(np.corrcoef(gt, gt + err)[0, 1]))
+            r_pearson=float(np.corrcoef(gt, gt + err)[0, 1]),
+            bias_wilcoxon_p=float(sps.wilcoxon(err).pvalue) if sps else float("nan"))
+        # sensitivity: drop the single largest |error| petiole (reported, not used for the verdict)
+        k = int(np.argmax(np.abs(err))); keep = np.arange(len(err)) != k
+        b2 = tstat_ci(err[keep]); lin2 = ols(gt[keep], err[keep])
+        res[coh]["drop_max"] = dict(
+            dropped=f"{sub[k]['plant']}#{sub[k]['pid']}", dropped_err=float(err[k]), dropped_ci=sub[k]["ci_full"],
+            n=int(keep.sum()), bias_mm=b2["mean"], bias_p=b2["p"],
+            bias_wilcoxon_p=float(sps.wilcoxon(err[keep]).pvalue) if sps else float("nan"),
+            loa=[b2["mean"] - 1.96 * b2["sd"], b2["mean"] + 1.96 * b2["sd"]],
+            linearity_slope=lin2["slope"], linearity_slope_p=lin2["p_slope"])
     # figure A
     fig, ax = plt.subplots(1, 2, figsize=(10.5, 4.6))
     for coh, st in COH_STYLE.items():
@@ -258,12 +268,15 @@ def block_b(pet):
                     markerfacecolor="none", markeredgecolor=BLACK, markersize=3.2, alpha=0.6)
             ax.plot(i + 0.18 + rng.uniform(-0.09, 0.09, len(dg)), dg, linestyle="none", marker="s",
                     markerfacecolor="none", markeredgecolor=RED, markersize=3.2, alpha=0.6)
+            ax.text(i + 0.18, 0.0062, f"n={len(dg)}", color=RED, ha="center", va="bottom", fontsize=9)
         ax.set_yscale("log"); ax.set_xticks(pos); ax.set_xticklabels([PROC_LABEL[p] for p in PROCS], fontsize=10)
         ax.set_title(f"{coh}: SD over disjoint {BUDGET}-view sets")
         ax.axhline(TAU / 1.96, color="grey", lw=1, ls="--")
     axes[0].set_ylabel("SD of repeated length (mm, log)")
     axes[0].plot([], [], color=BLACK, label="all computable sets"); axes[0].plot([], [], color=RED, label=f"sets with CI ≤ {TAU:.0f} mm")
-    axes[0].legend(loc="upper left", frameon=True, edgecolor="black", fancybox=False, fontsize=9)
+    axes[0].plot([], [], color="grey", lw=1, ls="--", label=f"SD = {TAU:.0f}/1.96 = {TAU / 1.96:.2f} mm")
+    axes[0].set_ylim(0.005, 150)
+    axes[0].legend(loc="lower left", bbox_to_anchor=(0, 0.06), frameon=True, edgecolor="black", fancybox=False, fontsize=9)
     fig.tight_layout(); fig.savefig(OUT / "figB_repeatability.png"); plt.close(fig)
     return res, rows
 
@@ -273,6 +286,7 @@ def block_c(rows):
     taus = np.arange(1.0, 30.5, 0.5)
     res = {}
     fig, ax = plt.subplots(1, 2, figsize=(10.5, 4.6))
+    ax1r = ax[1].twinx()
     for coh, st in COH_STYLE.items():
         sub = [x for x in rows if x["cohort"] == coh and x["proc"] == "uncertainty" and x["L"] is not None]
         ci = np.array([x["ci"] for x in sub]); ae = np.abs([x["err"] for x in sub])
@@ -289,16 +303,18 @@ def block_c(rows):
         ax[0].plot(ci, ae, linestyle="none", marker=st["marker"], markerfacecolor="none",
                    markeredgecolor=st["color"], markersize=4.5, alpha=0.8, label=f"{coh} (n={len(sub)})")
         ax[1].plot(taus, acc, color=st["color"], lw=1.8, label=f"{coh}: accepted (%)")
-        ax[1].plot(taus, mae, color=st["color"], lw=1.8, ls="--", label=f"{coh}: MAE of accepted (mm)")
+        ax1r.plot(taus, mae, color=st["color"], lw=1.8, ls="--", label=f"{coh}: MAE of accepted (mm, right)")
     ax[0].set_xscale("log"); ax[0].set_yscale("log")
     ax[0].axvline(TAU, color="grey", lw=1, ls="--"); ax[0].axhline(10, color="grey", lw=1, ls=":")
     ax[0].set_xlabel("Predicted 95% half-interval (mm)"); ax[0].set_ylabel("|error| vs caliper (mm)")
     ax[0].set_title("(a) Predicted interval vs actual error (4-view sets)")
     ax[0].legend(loc="upper left", frameon=True, edgecolor="black", fancybox=False, fontsize=9)
     ax[1].axvline(TAU, color="grey", lw=1, ls="--")
-    ax[1].set_xlabel("Acceptance threshold τ on predicted interval (mm)"); ax[1].set_ylabel("Accepted (%)  /  MAE of accepted (mm)")
+    ax[1].set_xlabel("Acceptance threshold τ on predicted interval (mm)"); ax[1].set_ylabel("Accepted (%, solid)")
+    ax[1].set_ylim(0, 100); ax1r.set_ylim(0, 8); ax1r.set_ylabel("MAE of accepted (mm, dashed)")
     ax[1].set_title("(b) Yield-quality trade-off of the interval gate")
-    ax[1].legend(loc="center right", frameon=True, edgecolor="black", fancybox=False, fontsize=9)
+    h1, l1 = ax[1].get_legend_handles_labels(); h2, l2 = ax1r.get_legend_handles_labels()
+    ax[1].legend(h1 + h2, l1 + l2, loc="lower right", frameon=True, edgecolor="black", fancybox=False, fontsize=9)
     fig.tight_layout(); fig.savefig(OUT / "figC_interval_gate.png"); plt.close(fig)
     return res
 
