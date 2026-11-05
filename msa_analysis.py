@@ -126,6 +126,12 @@ def block_a(pet):
             pct_within_5mm=float(np.mean(np.abs(err) <= 5) * 100),
             r_pearson=float(np.corrcoef(gt, gt + err)[0, 1]),
             bias_wilcoxon_p=float(sps.wilcoxon(err).pvalue) if sps else float("nan"))
+        # full-pool interval: share reaching TAU (ceiling for any view subset), nominal coverage vs caliper,
+        # and the calibration factor (SD of error / predicted SD) that would restore 95% coverage
+        ci = np.array([r["ci_full"] for r in sub]); z = err / (ci / 1.96)
+        res[coh].update(ceiling_pct_ci_le_tau=float(100 * np.mean(ci <= TAU)),
+                        nominal_coverage_pct=float(100 * np.mean(np.abs(err) <= ci)),
+                        calib_factor=float(np.std(z[np.isfinite(z)], ddof=1)))
         # sensitivity: drop the single largest |error| petiole (reported, not used for the verdict)
         k = int(np.argmax(np.abs(err))); keep = np.arange(len(err)) != k
         b2 = tstat_ci(err[keep]); lin2 = ols(gt[keep], err[keep])

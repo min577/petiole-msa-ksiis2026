@@ -25,6 +25,9 @@
    "pct_within_5mm": 70.65217391304348,
    "r_pearson": 0.9881420253143965,
    "bias_wilcoxon_p": 0.06325590418110821,
+   "ceiling_pct_ci_le_tau": 65.21739130434783,
+   "nominal_coverage_pct": 64.13043478260869,
+   "calib_factor": 2.9627785451239497,
    "drop_max": {
     "dropped": "plant10#3",
     "dropped_err": 41.572634517387996,
@@ -66,6 +69,9 @@
    "pct_within_5mm": 90.9090909090909,
    "r_pearson": 0.995973073459396,
    "bias_wilcoxon_p": 0.6092870287816331,
+   "ceiling_pct_ci_le_tau": 85.45454545454545,
+   "nominal_coverage_pct": 61.81818181818181,
+   "calib_factor": 2.8282406340724546,
    "drop_max": {
     "dropped": "greenhouse_p11#2",
     "dropped_err": 7.069295246070951,
